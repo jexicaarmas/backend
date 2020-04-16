@@ -95,11 +95,12 @@ class ProductController extends Controller
     public function search(Request $request)
     {
        $this->validate($request, [
-        'keyword'        => 'required|string', 
         'value'          => 'required|string'
       ]);
 
-      $products = Product::where($request->keyword, 'LIKE', '%'. $request->value . '%')->get();
+      $products = Product::where('reference', 'LIKE', '%'. $request->value . '%')
+                          ->orWhere('name', 'LIKE', '%'. $request->value . '%')
+                          ->get();
       return $this->showAll($products);
     }
 }
